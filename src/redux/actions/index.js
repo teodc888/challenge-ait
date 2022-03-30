@@ -4,7 +4,9 @@ import {
   GET_PRODUCTOS,
   AGREGAR_CARRITO,
   ELIMINAR_CARRITO,
-  ELIMINAR_TODO_CARRITO
+  ELIMINAR_TODO_CARRITO,
+  CAMBIAR_COLOR,
+  VENTA
 } from "./actionsTypes";
 
 export const getProducts = () => {
@@ -41,15 +43,19 @@ export const eliminarCarrito = (id) => {
   };
 };
 
-export const ventaCarrito = payload => {
-  return async () => {
-    try {
-      let res = await axios.post("https://ait-tesapi.herokuapp.com/sales", payload);
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
+export const ventaCarrito = () => {
+  return (dispatch) => {
+    axios
+      .post("https://ait-tesapi.herokuapp.com/sales")
+      .then((data) => {
+        dispatch({
+          type: VENTA,
+          payload: data.data.message,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 };
 
@@ -57,6 +63,15 @@ export const eliminarTodoCarrito = () => {
   return (dispatch) => {
     dispatch({
       type: ELIMINAR_TODO_CARRITO,
+    });
+  };
+}
+
+export const cambiarColor = (color) => {
+  return (dispatch) => {
+    dispatch({
+      type: CAMBIAR_COLOR,
+      payload: color,
     });
   };
 }

@@ -14,10 +14,15 @@ import {
   Alert,
   Checkbox,
   IconButton,
+  Popover,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
+import InfoIcon from "@mui/icons-material/Info";
+
+//toastify
+import { toast } from "react-toastify";
 
 export default function CardCh({
   imagen,
@@ -30,6 +35,7 @@ export default function CardCh({
 }) {
   const dispatch = useDispatch();
 
+  //Agregar Eliminar del carrito
   const carrito = useSelector((state) => state.carrito);
 
   let aux1 = [];
@@ -53,36 +59,82 @@ export default function CardCh({
           tipo: "carrito",
         })
       );
+      toast.success("Producto guardado con éxito", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
       dispatch(eliminarCarrito(id));
+      toast.error("Producto eliminado con éxito", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
   const eliminarDelCarrito = () => {
     dispatch(eliminarCarrito(id));
+    toast.error("Productos eliminados con éxito", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
+  //Popover
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
   return (
-    <Card sx={{ maxWidth: 345, margin: "auto", borderRadius: "5%" }}>
+    <Card sx={{ maxWidth: 300, margin: "auto" }}>
+      {stock === 0 ? (
+        <Alert severity="error" sx={{ position: "absolute" }}>
+          Sin Stock
+        </Alert>
+      ) : tipo !== "carrito" ? (
+        <Alert severity="info" sx={{ position: "absolute" }}>
+          Cantidad: {stock}
+        </Alert>
+      ) : null}
       <CardMedia
         component="img"
-        height="350"
+        height="300"
         image={imagen}
         sx={{ objectFit: "contain" }}
         alt="green iguana"
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h6" component="div">
           {titulo}
         </Typography>
         <Typography gutterBottom variant="h7" component="div">
           {precio}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {descripcion}
-        </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ float: "left" }}>
         {tipo !== "carrito" ? (
           stock > 0 ? (
             <Checkbox
@@ -92,9 +144,9 @@ export default function CardCh({
               checkedIcon={<ShoppingCartIcon sx={{ color: "green" }} />}
             />
           ) : (
-            <Alert severity="error" sx={{ borderRadius: "10%" }}>
-              Sin Stock
-            </Alert>
+            <IconButton disabled>
+              <ShoppingCartOutlinedIcon />
+            </IconButton>
           )
         ) : (
           <IconButton
@@ -105,6 +157,36 @@ export default function CardCh({
             <DeleteIcon />
           </IconButton>
         )}
+      </CardActions>
+      <CardActions sx={{ float: "right" }}>
+        <IconButton
+          aria-label="info"
+          sx={{ color: "#00e5ff" }}
+          onMouseEnter={handlePopoverOpen}
+          onMouseLeave={handlePopoverClose}
+        >
+          <InfoIcon />
+        </IconButton>
+        <Popover
+          id="mouse-over-popover"
+          sx={{
+            pointerEvents: "none",
+          }}
+          open={open}
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          onClose={handlePopoverClose}
+          disableRestoreFocus
+        >
+          <Typography sx={{ p: 1 }}>{descripcion}</Typography>
+        </Popover>
       </CardActions>
     </Card>
   );

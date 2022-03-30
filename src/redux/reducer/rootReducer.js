@@ -3,12 +3,16 @@ import {
   AGREGAR_CARRITO,
   ELIMINAR_CARRITO,
   ELIMINAR_TODO_CARRITO,
+  CAMBIAR_COLOR,
+  VENTA
 } from "../actions/actionsTypes";
 
 const initialState = {
   productos: [],
   carrito: [],
   precio: "",
+  color: "light",
+  venta: "created",
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -36,6 +40,16 @@ export default function rootReducer(state = initialState, action) {
         carrito: [],
       };
 
+    case CAMBIAR_COLOR:
+      return {
+        ...state,
+        color: action.payload,
+      };
+    case VENTA:
+      return {
+        ...state,
+        venta: action.payload,
+      };
     default:
       return state;
   }
