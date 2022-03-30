@@ -1,3 +1,9 @@
+import React, { useEffect } from 'react';
+
+//Redux
+import { useDispatch } from 'react-redux';
+import {getProducts} from './redux/actions/index';
+
 // React Router
 import { Routes, Route } from "react-router-dom";
 
@@ -7,6 +13,13 @@ import Navbar from "./components/navbar/navbar";
 import Carrito from "./components/carrito/carrito";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+  
+
   return (
     <div>
       <Navbar />

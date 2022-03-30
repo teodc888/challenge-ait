@@ -1,5 +1,11 @@
 import * as React from "react";
 
+//Redux
+import { useSelector } from "react-redux";
+
+//Router
+import { useNavigate } from "react-router";
+
 //Mui
 import {
   AppBar,
@@ -12,6 +18,14 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function Navbar() {
+  const navigate = useNavigate();
+
+  const carrito = useSelector((state) => state.carrito);
+
+  const handleClickCarrito = () => {
+    navigate("/carrito");
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ bgcolor: "red" }}>
@@ -25,8 +39,9 @@ export default function Navbar() {
             aria-controls="menu-appbar"
             aria-haspopup="true"
             color="inherit"
+            onClick={handleClickCarrito}
           >
-            <Badge badgeContent={4} color="primary">
+            <Badge badgeContent={carrito.length} color="primary">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
