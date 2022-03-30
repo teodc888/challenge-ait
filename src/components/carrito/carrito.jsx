@@ -2,16 +2,15 @@ import React from "react";
 
 //Redux
 import { useSelector, useDispatch } from "react-redux";
-import { ventaCarrito, eliminarTodoCarrito } from "../../redux/actions/index";
+import { eliminarTodoCarrito } from "../../redux/actions/index";
 
 //Componentes
 import CardCh from "../card/card";
+import MetodosCompras from "../metodosCompras/metodosCompras";
 
 //Mui
 import { Grid, Box, Stack, Typography, Button, Container } from "@mui/material";
-
-//Swal
-import Swal from "sweetalert2";
+import Slide from '@mui/material/Slide';
 
 //router
 import { useNavigate } from "react-router";
@@ -19,39 +18,34 @@ import { useNavigate } from "react-router";
 //toastify
 import { toast } from "react-toastify";
 
+//PopUp
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function Carrito() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const carrito = useSelector((state) => state.carrito);
-  const venta = useSelector((state) => state.venta);
+
 
   const total = carrito.reduce((acc, cur) => {
     const precio = cur.price.slice(1);
     return acc + Number(precio);
   }, 0);
 
-  const handleClickVenta = () => {
-    dispatch(ventaCarrito(carrito));
-    setTimeout(() => {
-      venta === "created"
-        ? Swal.fire({
-            text: "Compra Completada",
-            confirmButtonText: "Ok",
-            icon: "success",
-            width: "auto",
-            timer: 2500,
-          })
-        : Swal.fire({
-            text: "Compra Cancelada",
-            confirmButtonText: "Ok",
-            icon: "error",
-            width: "auto",
-            timer: 2500,
-          });
-      dispatch(eliminarTodoCarrito());
-    }, 1000);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   const handleClickEliminar = () => {
     dispatch(eliminarTodoCarrito());
@@ -135,11 +129,12 @@ export default function Carrito() {
               <Button
                 variant="contained"
                 color="success"
-                onClick={handleClickVenta}
+                onClick={handleClickOpen}
                 sx={{ mt: "2%", mb: "2%" }}
               >
                 Realizar la comprar
               </Button>
+              <MetodosCompras open={open} Transition={Transition} handleClose={handleClose} />
             </Stack>
           ) : null}
         </Box>
