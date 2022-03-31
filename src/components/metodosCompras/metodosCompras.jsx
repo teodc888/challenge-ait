@@ -160,9 +160,10 @@ export default function MetodosCompras({ open, Transition, handleClose }) {
                         id="outlined-basic"
                         label="Fecha de vencimiento"
                         variant="outlined"
-                        type="date"
+                        type="month"
                         focused
                         fullWidth
+                        required
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -172,6 +173,7 @@ export default function MetodosCompras({ open, Transition, handleClose }) {
                         variant="outlined"
                         type="text"
                         fullWidth
+                        required
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -181,6 +183,7 @@ export default function MetodosCompras({ open, Transition, handleClose }) {
                         variant="outlined"
                         type="number"
                         fullWidth
+                        required
                       />
                     </Grid>
                   </Grid>
@@ -189,7 +192,9 @@ export default function MetodosCompras({ open, Transition, handleClose }) {
                   variant="contained"
                   color="success"
                   onClick={handleClickVenta}
+                  type="submit"
                   sx={{ mt: "5%" }}
+
                 >
                   Pagar
                 </Button>

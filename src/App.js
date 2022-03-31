@@ -2,6 +2,9 @@ import * as React from "react";
 
 import { useEffect } from "react";
 
+//Boostrap
+import "bootstrap/dist/css/bootstrap.min.css";
+
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, cambiarColor } from "./redux/actions/index";
