@@ -43,6 +43,8 @@ export default function Home() {
             paginado={paginado}
             productoPorPagina={productoPorPagina}
             productos={productos.length}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </Stack>
         <Grid
