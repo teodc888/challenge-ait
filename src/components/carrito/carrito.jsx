@@ -124,7 +124,7 @@ export default function Carrito() {
               sx={{ mt: "2%" }}
             >
               <Typography variant="h5" component="div" textAlign="center">
-                Precio Total ${total}
+                Precio Total ${total.toLocaleString("es-AR")}
               </Typography>
               <Button
                 variant="contained"
