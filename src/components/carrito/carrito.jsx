@@ -138,19 +138,29 @@ export default function Carrito() {
                 variant="contained"
                 color="error"
                 onClick={handleClickEliminar}
-                sx={{ mt: "1%" }}
+                sx={{ mb: "2%" }}
               >
                 Borrar Todo
               </Button>
             ) : (
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleClickVolver}
-                sx={{ mt: "1%" }}
-              >
-                Agregar productos al carrito
-              </Button>
+              <>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleClickVolver}
+                  sx={{ mt: "1%", display: { xs: "none", md: "block" } }}
+                >
+                  Agregar productos al carrito
+                </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleClickVolver}
+                  sx={{ mt: "10%", display: { xs: "block", md: "none" } }}
+                >
+                  Agregar productos al carrito
+                </Button>
+              </>
             )}
           </Stack>
         </Box>
