@@ -43,10 +43,10 @@ export const eliminarCarrito = (id) => {
   };
 };
 
-export const ventaCarrito = () => {
+export const ventaCarrito = payload => {
   return (dispatch) => {
     axios
-      .post("https://ait-tesapi.herokuapp.com/sales")
+      .post("https://ait-tesapi.herokuapp.com/sales", payload)
       .then((data) => {
         dispatch({
           type: VENTA,

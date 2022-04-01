@@ -12,7 +12,7 @@ const initialState = {
   carrito: [],
   precio: "",
   color: "light",
-  venta: "",
+  venta: "created",
 };
 
 export default function rootReducer(state = initialState, action) {

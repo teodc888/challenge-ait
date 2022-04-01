@@ -66,7 +66,6 @@ export default function MetodosCompras({ open, Transition, handleClose }) {
     setMetodo("");
   };
 
-  console.log(metodo);
 
   return (
     <>
