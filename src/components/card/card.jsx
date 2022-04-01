@@ -127,10 +127,20 @@ export default function CardCh({
         alt="green iguana"
       />
       <CardContent>
-        <Typography gutterBottom variant="h6" component="div">
+        <Typography
+          gutterBottom
+          variant="h6"
+          component="div"
+          fontFamily="Helvetica Neue"
+        >
           {titulo}
         </Typography>
-        <Typography gutterBottom variant="h7" component="div">
+        <Typography
+          gutterBottom
+          variant="h7"
+          component="div"
+          fontFamily={"-apple-system"}
+        >
           {precio}
         </Typography>
       </CardContent>
@@ -185,7 +195,9 @@ export default function CardCh({
           onClose={handlePopoverClose}
           disableRestoreFocus
         >
-          <Typography sx={{ p: 1 }}>{descripcion}</Typography>
+          <Typography sx={{ p: 1 }} fontFamily="Segoe UI Symbol">
+            {descripcion}
+          </Typography>
         </Popover>
       </CardActions>
     </Card>

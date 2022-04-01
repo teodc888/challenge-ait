@@ -14,11 +14,12 @@ import {
   Typography,
   IconButton,
   Badge,
-  Checkbox
+  Checkbox,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness4OutlinedIcon from "@mui/icons-material/Brightness4Outlined";
+import HomeIcon from "@mui/icons-material/Home";
 
 export default function Navbar({ setMode }) {
   const navigate = useNavigate();
@@ -41,11 +42,30 @@ export default function Navbar({ setMode }) {
     navigate("/carrito");
   };
 
+  const handleClickHome = () => {
+    navigate("/");
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ bgcolor: "#263238" }}>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={handleClickHome}
+          >
+            <HomeIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+            fontFamily="Segoe UI Symbol"
+          >
             Challenge AIT
           </Typography>
           <Checkbox

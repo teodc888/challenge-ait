@@ -36,7 +36,13 @@ export default function Home() {
           justifyContent="center"
           sx={{ mb: "3%" }}
         >
-          <Typography variant="h2" component="div" textAlign="center" sx={{mb:"1%"}}>
+          <Typography
+            variant="h2"
+            component="div"
+            textAlign="center"
+            sx={{ mb: "1%", fontSize: "70px" }}
+            fontFamily="Segoe UI Symbol"
+          >
             Carta
           </Typography>
           <Paginado

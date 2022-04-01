@@ -12,30 +12,34 @@ import {
   DialogTitle,
   Stack,
   Typography,
-  CardMedia,
-  Card,
-  Grid,
-  Box,
-  TextField,
 } from "@mui/material";
 
 //Swal
 import Swal from "sweetalert2";
 
-export default function MetodosCompras({ open, Transition, handleClose }) {
+//Componentes
+import Tarjeta from "./tarjeta/tarjeta";
+import Usuario from "./usuario/usuario";
+
+export default function MetodosCompras({
+  open,
+  Transition,
+  handleClose,
+  total,
+}) {
   const dispatch = useDispatch();
+
+  const [usuario, setUsuario] = useState({});
+
+  const [datos, setDatos] = useState(false);
 
   const [metodo, setMetodo] = useState("");
 
   const carrito = useSelector((state) => state.carrito);
   const venta = useSelector((state) => state.venta);
 
-  const total = carrito.reduce((acc, cur) => {
-    const precio = cur.price.slice(1);
-    return acc + Number(precio);
-  }, 0);
-
-  const handleClickVenta = () => {
+  const handleClickVenta = (e) => {
+    e.preventDefault();
     dispatch(ventaCarrito(carrito));
     setTimeout(() => {
       venta === "created"
@@ -66,7 +70,6 @@ export default function MetodosCompras({ open, Transition, handleClose }) {
     setMetodo("");
   };
 
-
   return (
     <>
       <Dialog
@@ -76,9 +79,15 @@ export default function MetodosCompras({ open, Transition, handleClose }) {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        {metodo !== "tarjeta" ? (
+        {datos === false ? (
+          <Usuario
+            setDatos={setDatos}
+            setUsuario={setUsuario}
+            usuario={usuario}
+          />
+        ) : metodo !== "tarjeta" ? (
           <>
-            <DialogTitle>{"Como quiere realizar la compra?"}</DialogTitle>
+            <DialogTitle>{`Como quiere realizar la compra ${usuario.nombre} ?`}</DialogTitle>
             <DialogContent>
               <Stack
                 direction="column"
@@ -90,14 +99,14 @@ export default function MetodosCompras({ open, Transition, handleClose }) {
                   component="div"
                   textAlign="center"
                   sx={{ mb: "10%" }}
+                  fontFamily={"-apple-system"}
                 >
-                  {" "}
-                  Monto a pagar: ${total.toLocaleString("es-AR")}{" "}
+                  Monto a pagar: ${total.toLocaleString("es-AR")}
                 </Typography>
                 <Button
                   variant="contained"
                   color="success"
-                  sx={{ mb: "5%" }}
+                  sx={{ mb: "6%" }}
                   onClick={handleClickVenta}
                 >
                   Efectivo
@@ -114,91 +123,11 @@ export default function MetodosCompras({ open, Transition, handleClose }) {
           </>
         ) : (
           <>
-            <DialogTitle>
-              <Button
-                variant="contained"
-                color="info"
-                onClick={volver}
-                sx={{ mr: "2%" }}
-              >
-                Volver
-              </Button>
-            </DialogTitle>
-            <DialogContent>
-              <Stack
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Card sx={{ maxWidth: 500 }}>
-                  <CardMedia
-                    component="img"
-                    alt="green iguana"
-                    height="250"
-                    image="https://www.bbva.es/content/dam/public-web/bbvaes/images/personas/productos/02_tarjetas/productos/credito/aqua-credito/2400x1600-card-tarjeta-aqua.jpg.img.768.1603104974176.jpg"
-                  />
-                </Card>
-                <Box sx={{ width: "100%", mt: "5%" }}>
-                  <Grid
-                    container
-                    rowSpacing={3}
-                    columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                  >
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-basic"
-                        label="Numero de tarjeta"
-                        variant="outlined"
-                        type="number"
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-basic"
-                        label="Fecha de vencimiento"
-                        variant="outlined"
-                        type="month"
-                        focused
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-basic"
-                        label="Nombre del titular"
-                        variant="outlined"
-                        type="text"
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="outlined-basic"
-                        label="Codigo de seguridad"
-                        variant="outlined"
-                        type="number"
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                  </Grid>
-                </Box>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleClickVenta}
-                  type="submit"
-                  sx={{ mt: "5%" }}
-
-                >
-                  Pagar
-                </Button>
-              </Stack>
-            </DialogContent>
+            <Tarjeta
+              volver={volver}
+              handleClickVenta={handleClickVenta}
+              usuario={usuario}
+            />
           </>
         )}
       </Dialog>

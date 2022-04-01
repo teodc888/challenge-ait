@@ -10,7 +10,7 @@ import MetodosCompras from "../metodosCompras/metodosCompras";
 
 //Mui
 import { Grid, Box, Stack, Typography, Button, Container } from "@mui/material";
-import Slide from '@mui/material/Slide';
+import Slide from "@mui/material/Slide";
 
 //router
 import { useNavigate } from "react-router";
@@ -29,12 +29,10 @@ export default function Carrito() {
 
   const carrito = useSelector((state) => state.carrito);
 
-
   const total = carrito.reduce((acc, cur) => {
     const precio = cur.price.slice(1);
     return acc + Number(precio);
   }, 0);
-
 
   const [open, setOpen] = React.useState(false);
 
@@ -45,7 +43,6 @@ export default function Carrito() {
   const handleClose = () => {
     setOpen(false);
   };
-
 
   const handleClickEliminar = () => {
     dispatch(eliminarTodoCarrito());
@@ -74,28 +71,41 @@ export default function Carrito() {
             justifyContent="center"
             sx={{ mb: "2%" }}
           >
-            <Typography variant="h2" component="div" textAlign="center">
+            <Typography
+              variant="h2"
+              component="div"
+              textAlign="center"
+              fontFamily="Segoe UI Symbol"
+              sx={{ fontSize: "70px" }}
+            >
               Carrito
             </Typography>
+            <Typography
+              variant="h6"
+              component="div"
+              textAlign="center"
+              fontFamily={"-apple-system"}
+            >
+              Total ${total.toLocaleString("es-AR")}
+            </Typography>
             {carrito.length > 0 ? (
-              <Button
-                variant="contained"
-                color="error"
-                onClick={handleClickEliminar}
-                sx={{ mt: "1%" }}
-              >
-                Borrar Todo
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleClickVolver}
-                sx={{ mt: "1%" }}
-              >
-                Agregar al carrito
-              </Button>
-            )}
+              <>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleClickOpen}
+                  sx={{ mt: "2%", mb: "2%" }}
+                >
+                  Realizar la comprar
+                </Button>
+                <MetodosCompras
+                  open={open}
+                  Transition={Transition}
+                  handleClose={handleClose}
+                  total={total}
+                />
+              </>
+            ) : null}
           </Stack>
           <Grid
             container
@@ -116,27 +126,33 @@ export default function Carrito() {
               </Grid>
             ))}
           </Grid>
-          {carrito.length > 0 ? (
-            <Stack
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              sx={{ mt: "2%" }}
-            >
-              <Typography variant="h5" component="div" textAlign="center">
-                Precio Total ${total.toLocaleString("es-AR")}
-              </Typography>
+
+          <Stack
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ mt: "2%" }}
+          >
+            {carrito.length > 0 ? (
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleClickEliminar}
+                sx={{ mt: "1%" }}
+              >
+                Borrar Todo
+              </Button>
+            ) : (
               <Button
                 variant="contained"
                 color="success"
-                onClick={handleClickOpen}
-                sx={{ mt: "2%", mb: "2%" }}
+                onClick={handleClickVolver}
+                sx={{ mt: "1%" }}
               >
-                Realizar la comprar
+                Agregar productos al carrito
               </Button>
-              <MetodosCompras open={open} Transition={Transition} handleClose={handleClose} />
-            </Stack>
-          ) : null}
+            )}
+          </Stack>
         </Box>
       </Container>
     </>
