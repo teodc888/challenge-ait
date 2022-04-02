@@ -17,6 +17,9 @@ import {
 //Swal
 import Swal from "sweetalert2";
 
+//toastify
+import { toast } from "react-toastify";
+
 //Componentes
 import Tarjeta from "./tarjeta/tarjeta";
 import Usuario from "./usuario/usuario";
@@ -35,31 +38,36 @@ export default function MetodosCompras({
 
   const [metodo, setMetodo] = useState("");
 
+  const [error, setError] = useState({});
+
   const carrito = useSelector((state) => state.carrito);
-  const venta = useSelector((state) => state.venta);
 
   const handleClickVenta = (e) => {
     e.preventDefault();
-    dispatch(ventaCarrito(carrito));
-    setTimeout(() => {
-      venta === "created"
-        ? Swal.fire({
-            text: "Compra Completada",
-            confirmButtonText: "Ok",
-            icon: "success",
-            width: "auto",
-            timer: 2500,
-          })
-        : Swal.fire({
-            text: "Compra Cancelada",
-            confirmButtonText: "Ok",
-            icon: "error",
-            width: "auto",
-            timer: 2500,
-          });
-      dispatch(eliminarTodoCarrito());
-      setMetodo("");
-    }, 1000);
+    if (Object.keys(error).length === 0) {
+      dispatch(ventaCarrito(carrito));
+      setTimeout(() => {
+        Swal.fire({
+          text: "Compra Completada",
+          confirmButtonText: "Ok",
+          icon: "success",
+          width: "auto",
+          timer: 2500,
+        });
+        dispatch(eliminarTodoCarrito());
+        setMetodo("");
+      }, 1000);
+    } else {
+      toast.error("Complete correctamente los campos", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   const buttonTarjera = () => {
@@ -127,6 +135,8 @@ export default function MetodosCompras({
               volver={volver}
               handleClickVenta={handleClickVenta}
               usuario={usuario}
+              setError={setError}
+              error={error}
             />
           </>
         )}

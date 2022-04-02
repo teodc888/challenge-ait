@@ -13,9 +13,26 @@ import {
   TextField,
 } from "@mui/material";
 
-export default function Tarjeta({ volver, handleClickVenta, usuario }) {
+const validateForm = (datosTarjeta) => {
+  let error = {};
+  if (datosTarjeta.numeroTarjeta.length !== 16)
+    error.numeroTarjeta = "El numero de tarjeta debe tener 16 digitos";
+  else if (datosTarjeta.codigoSeguridad.length !== 3)
+    error.codigoSeguridad = "El codigo de seguridad tiene que tener 3 digitos";
+  return error;
+};
+
+export default function Tarjeta({
+  volver,
+  handleClickVenta,
+  usuario,
+  setError,
+  error,
+}) {
   const [datosTarjeta, setDatosTarjeta] = useState({
     nombreTitular: usuario.nombre + " " + usuario.apellido,
+    numeroTarjeta: 0,
+    codigoSeguridad: 0,
   });
 
   const handleChange = (e) => {
@@ -23,6 +40,9 @@ export default function Tarjeta({ volver, handleClickVenta, usuario }) {
       ...datosTarjeta,
       [e.target.name]: e.target.value,
     });
+    setError(
+      validateForm({ ...datosTarjeta, [e.target.name]: e.target.value })
+    );
   };
 
   return (
@@ -38,7 +58,7 @@ export default function Tarjeta({ volver, handleClickVenta, usuario }) {
         </Button>
       </DialogTitle>
       <DialogContent>
-        <form onSubmit={e => handleClickVenta(e)}>
+        <form onSubmit={(e) => handleClickVenta(e)}>
           <Stack direction="column" alignItems="center" justifyContent="center">
             <Card sx={{ maxWidth: 500 }}>
               <CardMedia
@@ -64,6 +84,8 @@ export default function Tarjeta({ volver, handleClickVenta, usuario }) {
                     required
                     name="numeroTarjeta"
                     onChange={handleChange}
+                    helperText={error.numeroTarjeta}
+                    error={error.numeroTarjeta ? true : false}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -103,6 +125,8 @@ export default function Tarjeta({ volver, handleClickVenta, usuario }) {
                     required
                     name="codigoSeguridad"
                     onChange={handleChange}
+                    helperText={error.codigoSeguridad}
+                    error={error.codigoSeguridad ? true : false}
                   />
                 </Grid>
               </Grid>
